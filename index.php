@@ -6,7 +6,7 @@
 
 <!-- Entête de la page -->
 <?php 
-  include("inclus/connectedHeader.inc");
+  include("inclus/header.inc");
 ?>
 
 <!-- Contenu -->
