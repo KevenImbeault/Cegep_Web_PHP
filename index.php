@@ -10,16 +10,32 @@
 ?>
 
 <!-- Contenu -->
-<div class="container">
-    
-  <!-- Date du jour -->
-  <b><span class="navbar-text" id="date"> </span></b>
-  
-  <p>Bonjour,</p>
-  <p>Dans le cadre des jeux d'Alma, nous avons mis sur pied un site pour vous ppermettre de connaitre nos valeureux athlètes. De plus, vous pourrez consulter les résultats qu'ils obtiendront dans le différentes disciplines offerts lors des jeux ...</p>
-  <p>Pout tout commentaires, questions ou suggestions, écrivez-nous à l'adresse suivante <a href="mailto:info@jeuxAlma.com">info@jeuxAlma.com</a>.</p>
-  <p>Bonne compétition !</p>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Keven Imbeault</title>
+
+    <link rel="stylesheet" href="./css/style.css" />
+
+
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+</head>
+<body>
+<nav id="homeNav">
+    <a href="./about.html">À propos</a>
+    <a href="">Compétences</a>
+    <a href="">Projets</a>
+</nav>
+<div id="home">
+    <h1>Keven Imbeault</h1>
+    <hr />
 </div>
+</body>
+<script src="./fonctions.js"></script>
+</html>
 
 <!-- Pied de page -->
 <?php 

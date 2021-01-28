@@ -14,7 +14,11 @@
 
   <!-- CSS de Boostrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
-          integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+          integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous"/>
+
+  <!-- Police d'écritures -->
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css?family=Ubuntu+Mono&display=swap" rel="stylesheet" />
 
   <!-- CSS du site -->
   <link rel="stylesheet" href="./css/style.css">
@@ -28,20 +32,21 @@
 <body onload="getDateString();">
     <!-- Barre de navigation -->
     <nav class="navbar navbar-expand-lg navbar-dark">
-        <img src="./images/icon.svg" width="30" height="30" alt="">
-        <a class="navbar-brand" href="./index.php">Jeux Alma</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-          <ul class="navbar-nav mr-auto">
-            <li class="nav-item">
-              <a class="nav-link" href="./athlete.php">Nos Athlètes</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="./resultat.php">Résultats</a>
-            </li>
-          </ul>
-          <a href="./connexion.php">Connexion</a>
+        <div class="container-fluid">
+            <a class="navbar-brand" href="./index.php">Jeux Alma</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="./athlete.php">Nos Athlètes</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="./resultat.php">Résultats</a>
+                    </li>
+                </ul>
+                <a href="./connexion.php">Connexion</a>
+            </div>
         </div>
       </nav>
