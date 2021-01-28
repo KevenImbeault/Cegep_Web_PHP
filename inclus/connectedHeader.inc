@@ -8,43 +8,78 @@
 <html lang="fr">
 
 <head>
-  <!-- Tags nécessaires -->
-  <meta charset='utf-8'>
-  <meta name='viewport' content='width=device-width, initial-scale=1, shrink-to-fit=no'>
+    <!-- Tags nécessaires -->
+    <meta charset='utf-8'>
+    <meta name='viewport' content='width=device-width, initial-scale=1, shrink-to-fit=no'>
 
-  <!-- CSS de Boostrap -->
-  <link rel='stylesheet' href='https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css'
-      integrity='sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh' crossorigin='anonymous'>
+    <!-- CSS de Boostrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous"/>
 
-  <!-- CSS du site -->
-  <link rel="stylesheet" href="./css/style.css">
+    <!-- Police d'écritures -->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css?family=Ubuntu+Mono&display=swap" rel="stylesheet" />
 
-  <!-- Icône du site -->
-  <link rel="shortcut icon" href="./images/icon.svg" type="image/x-icon">
+    <!-- CSS du site -->
+    <link rel="stylesheet" href="./css/style.css">
 
-  <title>Jeux ALMA</title>
+    <!-- Icône du site -->
+    <link rel="shortcut icon" href="./images/MagasinCoin.ico" type="image/x-icon">
+
+    <title>Magasin du coin</title>
 </head>
 
-<body onload="getDateString();">
-    <!-- Barre de navigation -->
-    <nav class="navbar navbar-expand-lg navbar-dark">
-        <img src="./images/icon.svg" width="30" height="30" alt="">
-        <a class="navbar-brand" href="./index.php">Jeux Alma</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
+<body>
+<!-- Barre de navigation -->
+<nav class="navbar navbar-expand-lg navbar-dark">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="./index.php">Magasin du coin - Gestion</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
         </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-          <ul class="navbar-nav mr-auto">
-            <li class="nav-item">
-              <a class="nav-link" href="./ajouterAthlete.php">Ajouter Athlète</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="./modifierAthlete.php">Modifier Athlète</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="./supprimerAthlete.php">Supprimer Athlète</a>
-            </li>
-          </ul>
-          <a href="./connexion.php?action=disconnect">Déconnexion</a>
+        <div class="collapse navbar-collapse" id="navbarText">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownProduit" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Produits
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdownProduit">
+                        <li><a class="dropdown-item" href="#">Ajouter</a></li>
+                        <li><a class="dropdown-item" href="#">Modifier</a></li>
+                        <li><a class="dropdown-item" href="#">Supprimer</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownCommande" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Commandes
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdownCommande">
+                        <li><a class="dropdown-item" href="#">Ajouter</a></li>
+                        <li><a class="dropdown-item" href="#">Modifier</a></li>
+                        <li><a class="dropdown-item" href="#">Supprimer</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownFacture" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Factures
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdownFacture">
+                        <li><a class="dropdown-item" href="#">Ajouter</a></li>
+                        <li><a class="dropdown-item" href="#">Modifier</a></li>
+                        <li><a class="dropdown-item" href="#">Supprimer</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownClient" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Clients
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdownClient">
+                        <li><a class="dropdown-item" href="#">Ajouter</a></li>
+                        <li><a class="dropdown-item" href="#">Modifier</a></li>
+                        <li><a class="dropdown-item" href="#">Supprimer</a></li>
+                    </ul>
+                </li>
+            </ul>
         </div>
-      </nav>
+    </div>
+</nav>

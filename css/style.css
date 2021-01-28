@@ -45,7 +45,7 @@ body #homeNav {
 
 body #homeNav a,
 body .navbar a {
-    color: #C2C2C2;
+    color: rgba(255,255,255,.55);
     font-weight: 600;
 }
 
@@ -55,6 +55,15 @@ body .navbar a {
 
 body #homeNav a {
     font-size : 36px;
+}
+
+body .navbar .dropdown-menu {
+    background-color: #1d1d1d !important;
+}
+
+body .navbar .dropdown-menu .dropdown-item:hover {
+    background-color: inherit !important;
+    color: rgba(255,255,255,.75);
 }
 
 /* * * * * * * * * * * * *
