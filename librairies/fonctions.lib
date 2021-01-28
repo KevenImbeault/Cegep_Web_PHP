@@ -1,0 +1,408 @@
+<!--
+    Nom : Keven Imbeault
+    Date : 7 avril 2020
+    But : Créer des fonctions en PHP afin de générer du contenu à partir d'une base de données
+-->
+
+<?php 
+    function connectDB(&$db) {
+        $db = mysqli_connect("localhost", "root", "info420", "jeuxAlma");
+        if (mysqli_connect_errno())
+        {
+            echo "Echec lors de la connexion à Mysql : ".mysqli_connect_error();
+        }
+        $db->set_charset("utf8");
+    }
+
+    function displayAthlete(&$db) {
+        $requete = "select *, nomSport, nomRegion from athlete, sport, region WHERE idSport=noSport and idRegion=noRegion;";
+        $resultat = mysqli_query($db, $requete);
+        while($ligne = mysqli_fetch_array($resultat)) 
+        {
+            $age = findAge($ligne["dateNaissance"]);
+
+            print("<div class='row athlete'>");
+
+            //Détermine l'image à afficher selon l'id de l'athlète
+            print("<img src='images/$ligne[idAthlete].png' width='50' class='col-md-3 col-sm-12'>");
+
+            print("<div class='d-flex flex-column col-md-6 col-sm-12'>");
+
+                //Détermine le titre de civilité de la personne selon son genre
+                if("$ligne[genre]" == "M") {
+                    print("<p class='p-2 align-self-center'>M. ");
+                } else {
+                    print("<p class='p-2 align-self-center'>Mlle. ");
+                }
+                //Imprime le reste de la ligne qui est identique peut importe le genre
+                print("$ligne[prenomAthlete] $ligne[nomAthlete] ( $age ans )</p>");
+
+                print("<p class='p-2 align-self-center '><b>Sport :</b> $ligne[nomSport]</p>");
+
+                print("<p class='p-2 align-self-center'><b>Région :</b> $ligne[nomRegion]</p>");
+
+            print("</div>");
+
+            print("<div class='d-inline-flex align-self-center text-center flex-column col-md-3 col-sm-12'>");
+
+                print("<a href='./rejoindre.php?nom=$ligne[nomAthlete]&prenom=$ligne[prenomAthlete]&sport=$ligne[nomSport]' class='p-2'>Envoyer un message ...</a>");
+
+            print("</div>");
+
+            print("</div>");
+        }
+    }
+
+    function findAge($date) {
+        //Calcul l'âge d'un athlète
+        return (int) ((time() - strtotime($date)) / 3600 / 24 / 365);
+    }
+
+    function getSport($sport, &$db) {
+        // Fait une requête à la base de données afin de savoir le nom du sport de l'athlète
+        $requete = "select nomSport from sport where idSport=$sport";
+        $resultat = mysqli_query($db, $requete);
+        $nomSport = mysqli_fetch_array($resultat);
+
+        // Si le sport n'existe pas, et donc que le tableau est vide, écrire N/A
+        // Sinon retourne le nom du sport
+        if(sizeof($nomSport) == 0) {
+            return "N/A";
+        } else {
+            return $nomSport[0];
+        }
+
+        
+    }
+
+    function getRegion($region, &$db) {
+        $requete = "select nomRegion from region where idRegion=$region";
+        $resultat = mysqli_query($db, $requete);
+        $nomRegion = mysqli_fetch_array($resultat);
+
+        // Si la region n'existe pas, et donc que le tableau est vide, écrire N/A
+        // Sinon retourne le nom de la region
+        if(sizeof($nomRegion) == 0) {
+            return "N/A";
+        } else {
+            return $nomRegion[0];
+        }
+    }
+
+    function verifyForm(&$db, $username, $password) {
+        // Utilise la fonction mysqli_real_escape_string afin d'empêcher que l'utilisateur entre des caractères spéciaux afin de faire une injection SQL
+        // (Insérer du code SQL dans un des inputs afin de la faire exécuter par mysql)
+        $username = mysqli_real_escape_string($db, $username);
+        $password = mysqli_real_escape_string($db, $password);
+
+        // Fait une requête à la base de données afin de savoir si l'usager existe  
+        $requete = "select * from usager where nom='$username' AND motPasse='$password'";
+        $resultat = mysqli_query($db, $requete);
+        $nomRegion = mysqli_fetch_array($resultat);
+
+        // Si le tableau à l'intérieur de la variable nomRegion est vide, afficher un message d'erreur
+        if(sizeof($nomRegion) == 0) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    function createSportOptions(&$db, $type) {
+        $requete = "";
+        if($type == "sport") {
+            $requete = "select * from sport";
+        } else if ($type == "region") {
+            $requete = "select * from region";
+        }
+        
+        $resultat = mysqli_query($db, $requete);
+        while($ligne = mysqli_fetch_array($resultat)) {
+
+
+            print("<option value=$value>$nom</option>");
+        }
+    }
+
+    function createAthlete(&$db, $POST) {
+        // Utilise la fonction mysqli_real_escape_string afin d'empêcher que l'utilisateur entre des caractères spéciaux afin de faire une injection SQL
+        // (Insérer du code SQL dans un des inputs afin de la faire exécuter par mysql)
+
+        //Données de l'athlète
+        $prenomAthlete = mysqli_real_escape_string($db, $POST["firstName"]);
+        $nomAthlete = mysqli_real_escape_string($db, $POST["lastName"]);
+        $noSport = mysqli_real_escape_string($db, $POST["sportSelect"]);
+        $genre = mysqli_real_escape_string($db, $POST["gender"]);
+        $dateNaissance = mysqli_real_escape_string($db, $POST["dateNaissance"]);
+        $courriel = mysqli_real_escape_string($db, $POST["email"]);
+        $noRegion = mysqli_real_escape_string($db, $POST["regionSelect"]);
+
+        //Création des valeurs
+        $values = "('$prenomAthlete', '$nomAthlete', $noSport, '$genre', '$dateNaissance', '$courriel', $noRegion)";
+
+        $requete = "insert into athlete (prenomAthlete, nomAthlete, noSport, genre, dateNaissance, courriel, noRegion) values $values;";
+        mysqli_query($db, $requete);
+
+        $requete = "select idAthlete from athlete where (prenomAthlete, nomAthlete, noSport, genre, dateNaissance, courriel, noRegion)=$values";
+        $resultat = mysqli_query($db, $requete);
+        $id = mysqli_fetch_array($resultat)[0];
+
+        $file = $_FILES['file']['tmp_name'];
+        $path = "images/";
+        $path = $path . $id . "." . pathinfo($_FILES['file']['name'], PATHINFO_EXTENSION);
+        move_uploaded_file($file, $path);
+    }
+
+    function deleteAthlete(&$db) {
+        //  Sélectionne tous les athlètes
+        $requete = "select * from athlete;";
+        $resultat = mysqli_query($db, $requete);
+
+        //Exécute ce code pour chaque enregistrement trouver dans la bd
+        while($ligne = mysqli_fetch_array($resultat)) {
+            $checked = 'chk_' . $ligne['idAthlete'];
+
+            // Si la boite correspondant à l'athlète existe dans la variable POST 
+            // et est cocher, supprimer l'athlète
+            if(isset($_POST[$checked]))
+                if($_POST[$checked]) {
+                    $deleteRequest = "DELETE FROM athlete WHERE idAthlete=$ligne[idAthlete];";
+                    mysqli_query($db, $deleteRequest);
+                    unlink("images/$ligne[idAthlete].png");
+                }
+        }
+    }
+
+    function displayTableAhletes(&$db) {
+        //  Sélectionne tous les athlètes
+        $requete = "select * from athlete;";    
+        $resultat = mysqli_query($db, $requete);
+    
+        // Ajoute l'header du tableau
+        print("<table class='table table-dark'>
+            <thead>
+            <tr>
+                <th>&nbsp</th>
+                <th>Prénom</th>
+                <th>Nom</th>
+                <th>Date naissance</th>
+                <th>Sport</th>
+                <th>Région</th>
+            </tr>
+            </thead>
+        ");
+
+        print("<tbody>");
+        //Ajoute les différentes lignes avec les données de la requête
+        while($ligne = mysqli_fetch_array($resultat)) 
+        {
+            print("<tr>");
+            print("<td><input type='checkbox' name='chk_$ligne[idAthlete]'></td>");
+            print("<td>$ligne[prenomAthlete]</td>");
+            print("<td>$ligne[nomAthlete]</td>");
+            print("<td>$ligne[dateNaissance]</td>");
+            print("<td>" . getSport($ligne["noSport"], $db) . "</td>");
+            print("<td>" . getRegion($ligne["noRegion"], $db) . "</td>");
+            print("</tr>");
+        }
+        print("</tbody></table>"); 
+    }
+
+    function displayAthleteMod(&$db) {
+        $requete = "select * from athlete";
+        $resultat = mysqli_query($db, $requete);
+        $id = -1;
+
+        if(isset($_GET['id']))
+            $id = $_GET['id']; 
+
+        while($ligne = mysqli_fetch_array($resultat)) 
+        {
+            //Déclaration de variables utiles pour les deux cas
+            $sport = getSport($ligne["noSport"], $db);
+            $region = getRegion($ligne["noRegion"], $db);
+            $gender = $ligne["genre"];
+
+            //Impression du début des lignes d'athlètes puisque identiques dans les deux cas
+            print("<div class='row athlete'>
+                        <!-- Détermine l'image à afficher grâce à l'id de l'athlète -->
+                        <img src='images/$ligne[idAthlete].png' height='50%' class='col-md-2 col-sm-12'>
+            ");
+
+            //Cas 1 : L'athlète doit être modifier
+            if( $ligne['idAthlete'] == $id) {
+                //Variables contenant les différents inputs radio
+                $inputF = "<input type='radio' name='gender' id='female' value='F'>";
+                $inputH = "<input type='radio' name='gender' id='male' value='H'>";
+                $inputX = "<input type='radio' name='gender' id='nonBinary' value='X'>";
+
+                //Détermine quel bouton radio doit être cocher
+                if($gender == "F")
+                    $inputF = "<input checked type='radio' name='gender' id='female' value='F'>";
+                elseif($gender == "M")
+                    $inputH = "<input checked type='radio' name='gender' id='male' value='H'>";
+                else
+                    $inputX = "<input checked type='radio' name='gender' id='nonBinary' value='X'>";
+
+                //TODO better print separation
+                
+
+                // Impression du formulaire de modification d'un athlète
+                print("
+                <div class='col-md-10'>
+                    <form  action='modifierAthlete.php?action=modify&no=$ligne[idAthlete]' method='post'>
+                    
+                        <!-- Boutons radio -->
+                        <div class='row'>
+                            <div class='col-sm-auto'>
+                                <label for='female'>Femme </label>
+                                $inputF
+                            </div>
+                
+                            <div class='col-sm-auto'>
+                                <label for='male'>Homme </label>
+                                $inputH
+                            </div>
+                
+                            <div class='col-sm-auto'>
+                                <label for='nonBinary'>Non-binaire </label>
+                                $inputX
+                            </div>
+                        </div>
+
+                        <!-- Champs -->                    
+                        <div class='row'>
+                            <label for='firstName' class='col-sm-5'>Prénom :</label>
+                            <div class='col-sm-7'>
+                                <input maxlength='25' type='text' name='firstName' id='firstName' class='form-control' value='$ligne[prenomAthlete]'>
+                            </div>
+                        </div>
+
+                        <div class='row'>
+                            <label for='lastName' class='col-sm-5'>Nom :</label>
+                            <div class='col-sm-7'>
+                                <input maxlength='25' type='text' name='lastName' id='lastName' class='form-control' value='$ligne[nomAthlete]'>
+                            </div>
+                        </div>
+
+                        <div class='row'>
+                            <label for='email' class='col-sm-5'>Courriel :</label>
+                            <div class='col-sm-7'>
+                                <input maxlength='50' type='email' name='email' id='email' class='form-control' value='$ligne[courriel]'>
+                            </div>
+                        </div>
+
+                        <div class='row'>
+                            <label for='dateNaissance' class='col-sm-5'>Date naissance :</label>
+                            <div class='col-sm-7'>
+                                <input type='date' name='dateNaissance' id='dateNaissance' class='form-control' value='$ligne[dateNaissance]'>
+                            </div>
+                        </div>  
+                        
+
+                        <div class='row'>
+                            <div class='col-sm-12'>
+                                <p>Sport : $sport</p>
+                            </div>
+                        </div>   
+
+                        <div class='row'>
+                            <div class='col-sm-12'>
+                                <p>Région : $region</p>
+                            </div>
+                        </div>   
+                        
+                        <!-- Boutons -->
+                        <div class='row'>
+                            <div class='col-sm-12'>
+                                <button type='submit' class='btn'>Sauvegarder</button>
+                                <button type='button' class='btn' onclick='cancelMod();'>Annuler</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                ");
+
+                print("</div>");
+            }
+            // Cas 2 : L'athlète ne doit pas être modifier
+            else {
+                $age = findAge($ligne["dateNaissance"]);
+                
+
+                //Détermine le titre de civilité de l'athlète selon son genre
+                $titre = " ";
+                if($gender == "M") 
+                    $titre = "M. ";
+                elseif ($gender == "F") 
+                    $titre = "Mlle. ";                
+
+                    print("
+                    <div class='d-flex flex-column col-md-6 col-sm-12'>
+                        <!-- Nom de l'athlète -->
+                        <p class='p-2 align-self-center'>$titre $ligne[prenomAthlete] $ligne[nomAthlete] ( $age ans )</p>
+
+                        <!-- Sport de l'athlète -->
+                        <p class='p-2 align-self-center '><b>Sport :</b> $sport</p>
+
+                        <!-- Région de l'athlète -->
+                        <p class='p-2 align-self-center'><b>Région :</b> $region</p>
+                    </div>
+
+                    <div class='d-inline-flex align-self-center text-center flex-column col-md-3 col-sm-12'>
+                        <!-- Lien pour ouvrir le formulaire de modification -->
+                        <a href='./modifierAthlete.php?id=$ligne[idAthlete]' class='p-2'>Modifier</a>
+                    </div>
+                    ");              
+            }
+
+            //Ferme le div de classes row et athlete ouvert plus haut
+            print("</div>");
+            
+        }
+    }
+
+    function modifyAthlete(&$db, $id) {
+        //Données de l'athlète
+        $prenomAthlete = mysqli_real_escape_string($db, $_POST["firstName"]);
+        $nomAthlete = mysqli_real_escape_string($db, $_POST["lastName"]);
+        $dateNaissance = mysqli_real_escape_string($db, $_POST["dateNaissance"]);
+        $courriel = mysqli_real_escape_string($db, $_POST["email"]);
+        $genre = mysqli_real_escape_string($db, $_POST["gender"]);
+
+        $requete = "update athlete set prenomAthlete='$prenomAthlete', nomAthlete='$nomAthlete', dateNaissance='$dateNaissance', courriel='$courriel', genre='$genre' where idAthlete = $id;";
+        mysqli_query($db, $requete);            
+    }
+
+    function sendEmail(&$db, $prenomAthlete, $nomAthlete, $sport) {
+        //Requête permettant de prendre le no de région et courriel d'un athlète
+        $request = "select courriel, noRegion, nomRegion from athlete, region where prenomAthlete='$prenomAthlete' and nomAthlete='$nomAthlete' and noRegion=idRegion;";
+        $result = mysqli_query($db, $request); 
+        $line =  mysqli_fetch_array($result);
+        
+        //Région de l'athlète
+        $region = $line['nomRegion'];
+        
+        //Adresse courriel du destinataire
+        $mail = $line["courriel"];
+        
+        //Sujet du message
+        $subject = "Vous avez un message ...";
+
+        //Adresse envoyant le courriel et adresse en copie conforme
+        $header = "From:etudiant.info@collegealma.ca\r\nCC: etudiant.info@collegealma.ca";
+        
+        //Création du message à l'intérieur du courriel
+        $body = $_POST["message"];
+        $body .= "\r\n\r\n------------------------------------";
+        $body .= "\r\n\r\nMerci de ne pas répondre à ce courriel.";
+        $body .= "\r\n\r\nCe message a été envoyer du site jeuxAlma à :";
+        $body .= "\r\nAthlète : $prenomAthlete $nomAthlete";
+        $body .= "\r\nSport : $sport";
+        $body .= "\r\nRégion : $region";
+
+        $body = wordwrap($body, 70, "\r\n", true);
+
+        return mail($mail, $subject, $body, $header);
+    }
+?>

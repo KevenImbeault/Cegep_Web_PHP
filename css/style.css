@@ -1,0 +1,104 @@
+/*
+    Nom : Keven Imbeault
+    Date : 6 avril 2020
+    But : Créer une page d'acceuil HTML
+*/
+
+/* STYLE GÉNÉRAL DE PAGE */
+html {
+    position : relative;
+}
+
+body {
+    background: rgb(26,26,26);
+    color: white;
+    height: 100vh;
+}
+
+a,
+button.btn {
+    color : #295dbe;
+}
+
+a:hover,
+button.btn:hover {
+    color: #214994;
+}
+
+button.btn {
+    border-color: #295dbe;
+}
+
+nav {
+    background-color: rgb(10, 10, 10);
+}
+
+nav img {
+    margin-right: 5px;
+}
+
+div.table-responsive {
+    margin-top: 2%;
+}
+
+.table-dark {
+    background-color: rgb(36, 36, 36);
+}
+
+.submit-delete {
+    margin-right: 2%;
+}
+
+/* STYLE POUR LE CONTENEUR DU CORPS DE LA PAGE*/
+
+div.container {
+    margin-top: 10%;
+    padding: 3%;
+    background-color: rgb(58, 58, 58);
+    border: px solid rgb(71, 71, 71);
+}
+
+div.container span {
+    margin-bottom: 2%;
+}
+
+div.container > p {
+    margin: 3%;
+}
+
+/* STYLE POUR FORMULAIRE */
+@media screen and (min-width : 1000px) {
+    div.container.form {
+        width: 30%;
+    }
+}
+
+div.container.form div.row {
+    margin-bottom: 5%;
+}
+
+div.container.form div.row:last-child {
+    margin-bottom: 0;
+}
+
+div.container.form div.row div > button {
+    margin-right: 5%;
+}
+
+div.athlete {
+    margin: 2%;
+}
+
+/* STYLE POUR LE FORMULAIRE REJOINDRE */
+div.container.form.rejoindre{
+    margin-top: 0.5%;
+}
+
+div.container.form.smallMargin {
+    margin-top: 2.5%;
+} 
+
+p.errorMsg {
+    color: red;
+    grid-column: span 2;
+}
