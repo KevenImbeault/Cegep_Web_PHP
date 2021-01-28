@@ -20,7 +20,7 @@
   <link rel="stylesheet" href="./css/style.css">
 
   <!-- Icône du site -->
-  <link rel="shortcut icon" href="./images/icon.svg" type="image/x-icon">
+  <link rel="shortcut icon" href="./images/MagasinCoin.ico" type="image/x-icon">
 
   <title>Jeux ALMA</title>
 </head>
