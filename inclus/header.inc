@@ -21,32 +21,37 @@
   <link href="https://fonts.googleapis.com/css?family=Ubuntu+Mono&display=swap" rel="stylesheet" />
 
   <!-- CSS du site -->
-  <link rel="stylesheet" href="./css/style.css">
+    <link rel="stylesheet" href="./css/style.css">
 
   <!-- Icône du site -->
   <link rel="shortcut icon" href="./images/MagasinCoin.ico" type="image/x-icon">
 
-  <title>Jeux ALMA</title>
+  <title>Magasin du coin</title>
 </head>
 
-<body onload="getDateString();">
+<body>
     <!-- Barre de navigation -->
     <nav class="navbar navbar-expand-lg navbar-dark">
         <div class="container-fluid">
-            <a class="navbar-brand" href="./index.php">Jeux Alma</a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <a class="navbar-brand" href="./index.php">Magasin du coin</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav mr-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="./athlete.php">Nos Athlètes</a>
+            <div class="collapse navbar-collapse" id="navbarText">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="#">Nos Produits</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="./resultat.php">Résultats</a>
+                        <a class="nav-link" href="#">Commander</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Nous rejoindre</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Connexion</a>
                     </li>
                 </ul>
-                <a href="./connexion.php">Connexion</a>
             </div>
         </div>
-      </nav>
+    </nav>

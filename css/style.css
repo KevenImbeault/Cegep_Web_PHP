@@ -1,104 +1,131 @@
-/*
-    Nom : Keven Imbeault
-    Date : 6 avril 2020
-    But : Créer une page d'acceuil HTML
-*/
+/* * * * * * * * * * * * *
+ *   MOBILE/RESPONSIVE   *
+ * * * * * * * * * * * * */
+@media screen and (max-width: 680px) {
+    #home h1 {
+        font-size: 8em !important;
+    }
 
-/* STYLE GÉNÉRAL DE PAGE */
-html {
-    position : relative;
-}
-
-body {
-    background: rgb(26,26,26);
-    color: white;
-    height: 100vh;
-}
-
-a,
-button.btn {
-    color : #295dbe;
-}
-
-a:hover,
-button.btn:hover {
-    color: #214994;
-}
-
-button.btn {
-    border-color: #295dbe;
-}
-
-nav {
-    background-color: rgb(10, 10, 10);
-}
-
-nav img {
-    margin-right: 5px;
-}
-
-div.table-responsive {
-    margin-top: 2%;
-}
-
-.table-dark {
-    background-color: rgb(36, 36, 36);
-}
-
-.submit-delete {
-    margin-right: 2%;
-}
-
-/* STYLE POUR LE CONTENEUR DU CORPS DE LA PAGE*/
-
-div.container {
-    margin-top: 10%;
-    padding: 3%;
-    background-color: rgb(58, 58, 58);
-    border: px solid rgb(71, 71, 71);
-}
-
-div.container span {
-    margin-bottom: 2%;
-}
-
-div.container > p {
-    margin: 3%;
-}
-
-/* STYLE POUR FORMULAIRE */
-@media screen and (min-width : 1000px) {
-    div.container.form {
-        width: 30%;
+    body #homeNav a {
+        font-size : 26px !important;
     }
 }
 
-div.container.form div.row {
-    margin-bottom: 5%;
+@media screen and (max-width: 560px) {
+    #home h1 {
+        font-size: 6em !important;
+    }
 }
 
-div.container.form div.row:last-child {
-    margin-bottom: 0;
+@media screen and (max-width: 460px) {
+    #home h1 {
+        font-size: 4em !important;
+    }
+
+    body #homeNav a {
+        font-size : 20px !important;
+    }
 }
 
-div.container.form div.row div > button {
-    margin-right: 5%;
+body {
+    min-height: 100vh;
+    padding: 5%;
+    background-color: #1d1d1d !important;
 }
 
-div.athlete {
-    margin: 2%;
+/* * * * * * * * * * * * *
+ *       NAVIGATION      *
+ * * * * * * * * * * * * */
+
+body #homeNav {
+    display: grid;
+    grid-template-columns: repeat(3, auto);
+    text-align: center;
 }
 
-/* STYLE POUR LE FORMULAIRE REJOINDRE */
-div.container.form.rejoindre{
-    margin-top: 0.5%;
+body #homeNav a,
+body .navbar a {
+    color: #C2C2C2;
+    font-weight: 600;
 }
 
-div.container.form.smallMargin {
-    margin-top: 2.5%;
-} 
+body .navbar a {
+    font-size: 30px;
+}
 
-p.errorMsg {
-    color: red;
-    grid-column: span 2;
+body #homeNav a {
+    font-size : 36px;
+}
+
+/* * * * * * * * * * * * *
+ *          PAGES        *
+ * * * * * * * * * * * * */
+
+
+/* * * * HOME PAGE * * * */
+#home {
+    text-align: center;
+}
+
+#home h1 {
+    margin-top: 10vh;
+    font-size: 10rem;
+    z-index: 100;
+    background-image: linear-gradient(to right, #007178, #02ADB8, #007178);
+    color:transparent;
+    -webkit-background-clip: text;
+    background-clip: text;
+}
+
+#home hr {
+    border: 1px solid rgb(255, 255, 255);
+}
+
+/* * * * ABOUT PAGE * * * */
+
+#findMe {
+    border-left : 1px solid white;
+}
+
+.findMeContent,
+body #about #aboutContent div p {
+    font-size: 18px;
+    font-weight: 600;
+}
+
+body #about {
+    color: #858585;
+}
+
+body #about #aboutContent {
+    padding-top: 5%;
+    display : grid;
+    grid-template-columns: repeat(2, 50%);
+}
+
+body #about #aboutContent div:first-child p {
+    padding : 0 20%;
+    text-align: justify;
+}
+
+body #about #aboutContent div:first-child p:first-child {
+    padding-top: 10%;
+}
+
+body #about #aboutContent #findMe .findMeContent a{
+    color : #C2C2C2;
+}
+
+body #about #aboutContent #findMe h2 {
+    font-size: 48px;
+    font-weight: bold;
+    color: #E1E1E1;
+}
+
+body #about #aboutContent #findMe h2 + .findMeContent{
+    padding-top : 5%;
+}
+
+body #about #aboutContent #findMe .findMeContent p:first-child{
+    margin-bottom: 0px;
 }
