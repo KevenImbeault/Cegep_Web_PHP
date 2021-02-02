@@ -40,7 +40,7 @@
             <div class="collapse navbar-collapse" id="navbarText">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item active">
-                        <a class="nav-link" href="#">Nos Produits</a>
+                        <a class="nav-link" href="./produits.php">Nos Produits</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#">Commander</a>
