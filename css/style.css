@@ -70,6 +70,15 @@ body .navbar .dropdown-menu .dropdown-item:hover {
  *          PAGES        *
  * * * * * * * * * * * * */
 
+body {
+    color: #9d9d9d;
+}
+
+body h2 {
+    font-size: 48px;
+    font-weight: bold;
+    color: #E1E1E1;
+}
 
 /* * * * HOME PAGE * * * */
 #home {
@@ -103,10 +112,6 @@ body #about #aboutContent div p {
     font-weight: 600;
 }
 
-body #about {
-    color: #858585;
-}
-
 body #about #aboutContent {
     padding-top: 5%;
     display : grid;
@@ -124,12 +129,6 @@ body #about #aboutContent div:first-child p:first-child {
 
 body #about #aboutContent #findMe .findMeContent a{
     color : #C2C2C2;
-}
-
-body #about #aboutContent #findMe h2 {
-    font-size: 48px;
-    font-weight: bold;
-    color: #E1E1E1;
 }
 
 body #about #aboutContent #findMe h2 + .findMeContent{

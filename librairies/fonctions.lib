@@ -6,17 +6,18 @@
 
 <?php 
     function connectDB(&$db) {
-        $db = mysqli_connect("localhost", "root", "info420", "imbk25099802");
-        if (mysqli_connect_errno())
-        {
-            echo "Echec lors de la connexion à Mysql : ".mysqli_connect_error();
+        try {
+            $db = new PDO('mysql:host=localhost;dbname=imbk25099802;charset=utf8', 'root', 'info420');
+            $db -> setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        } catch (Exception $e) {
+            echo "Echec : " . $e -> getMessage();
         }
-        $db->set_charset("utf8");
     }
 
     function displayAthlete(&$db) {
         $requete = "select *, nomSport, nomRegion from athlete, sport, region WHERE idSport=noSport and idRegion=noRegion;";
         $resultat = mysqli_query($db, $requete);
+
         while($ligne = mysqli_fetch_array($resultat)) 
         {
             $age = findAge($ligne["dateNaissance"]);

@@ -20,11 +20,12 @@
   <!-- Date du jour -->
   <b><span class="navbar-text" id="date"> </span></b>
   
-  <h2>Nos Athlètes</h2>
+  <h2>Nos produits</h2>
 
-  <!-- Fonction pour afficher les athlètes dans la base de données -->
+  <!-- Fonction pour afficher les produits dans la base de données -->
   <?php
-    displayAthlete($db);
+    phpinfo();
+    //displayAthlete($db);
   ?>
 </div>
 
