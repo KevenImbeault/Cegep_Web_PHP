@@ -6,7 +6,7 @@
 
 <?php 
     function connectDB(&$db) {
-        $db = mysqli_connect("localhost", "root", "info420", "jeuxAlma");
+        $db = mysqli_connect("localhost", "root", "info420", "imbk25099802");
         if (mysqli_connect_errno())
         {
             echo "Echec lors de la connexion à Mysql : ".mysqli_connect_error();

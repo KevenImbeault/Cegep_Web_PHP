@@ -15,7 +15,7 @@
     if($_GET["action"] == "send") {
       $sent = (bool) sendEmail($db, $_GET["prenom"], $_GET["nom"], $_GET["sport"]);
       if($sent) 
-        header("Location:athlete.php");
+        header("Location:produits.php");
     }
   }
   include("inclus/header.inc");

@@ -78,12 +78,13 @@ body .navbar .dropdown-menu .dropdown-item:hover {
 
 #home h1 {
     margin-top: 10vh;
-    font-size: 10rem;
+    padding-bottom: 2vh;
+    font-size: 12rem;
     z-index: 100;
     background-image: linear-gradient(to right, #007178, #02ADB8, #007178);
     color:transparent;
-    -webkit-background-clip: text;
     background-clip: text;
+    -webkit-background-clip: text;
 }
 
 #home hr {
