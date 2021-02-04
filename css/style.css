@@ -80,6 +80,10 @@ body h2 {
     color: #E1E1E1;
 }
 
+button.btn.btn-outline-primary {
+    color: white;
+}
+
 /* * * * HOME PAGE * * * */
 #home {
     text-align: center;
@@ -98,6 +102,24 @@ body h2 {
 
 #home hr {
     border: 1px solid rgb(255, 255, 255);
+}
+
+/* * * * PRODUCTS PAGE * * * */
+
+#products .row {
+    padding-top: 20px;
+    text-align: center;
+}
+
+#products .row .col img {
+    width: 15vw;
+    height: 15vh;
+}
+
+#products .row .col img + p {
+    margin-top: 2px;
+    margin-bottom: 2px;
+    font-weight: bold;
 }
 
 /* * * * ABOUT PAGE * * * */

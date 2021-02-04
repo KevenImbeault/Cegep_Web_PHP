@@ -15,18 +15,18 @@
 ?>
 
 <!-- Contenu -->
-<div class="container">
+<div id="products" class="container">
     
-  <!-- Date du jour -->
-  <b><span class="navbar-text" id="date"> </span></b>
-  
-  <h2>Nos produits</h2>
+    <!-- Date du jour -->
+    <b><span class="navbar-text" id="date"> </span></b>
 
-  <!-- Fonction pour afficher les produits dans la base de données -->
-  <?php
-    phpinfo();
-    //displayAthlete($db);
-  ?>
+    <h2>Nos produits</h2>
+
+    <!-- Fonction pour afficher les produits dans la base de données -->
+    <?php
+    displayProduit($db);
+    ?>
+
 </div>
 
 <!-- Pied de page -->

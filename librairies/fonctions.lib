@@ -14,6 +14,75 @@
         }
     }
 
+    function displayProduit(&$db) {
+        $select = $db -> prepare("SELECT idProduit, nomProduit, prix, description from produit_fr");
+        $select -> setFetchMode(PDO::FETCH_OBJ);
+
+        $select -> execute();
+
+        $count = 0;
+
+        while($line = $select->fetch(PDO::FETCH_OBJ))
+        {
+            setlocale(LC_MONETARY, 'en_ca');
+            $count++;
+
+            if($count == 1) {
+                print("<div class='row row-cols-1 row-cols-sm-2 row-cols-md-4'>");
+            }
+
+            print("<div class='col'>");
+
+            print("<h4>". $line -> nomProduit ."</h4>");
+
+            print("<img src='images/produits/" . $line -> idProduit . ".jpg'>");
+
+            print("<p>" . sprintf('%01.2f', $line -> prix) . " $</p>");
+
+            print("<div class='btn-group' role='group' aria-label='Basic example'>");
+
+                print("<button type='button' class='btn btn-primary' data-bs-toggle='modal' data-bs-target='#product" . $line -> idProduit . "Modal'>Plus d'infos</button>");
+
+                print("<button type='button' class='btn btn-outline-primary'>Acheter</button>");
+            print("</div>");
+
+
+            print("</div>");
+
+            if($count == 4) {
+                print("</div>");
+                $count = 0;
+            }
+
+            print("
+                <div class='modal fade' id='product" . $line -> idProduit . "Modal' tabindex='-1' aria-labelledby='product" . $line -> idProduit . "ModalLabel' aria-hidden='true'>
+                  <div class='modal-dialog'>
+                    <div class='modal-content'>
+            ");
+
+            print("
+                  <div class='modal-header'>
+                    <h5 class='modal-title' id='product" . $line -> idProduit . "ModalLabel'>Description du produit</h5>
+                    <button type='button' class='btn-close' data-bs-dismiss='modal' aria-label='Close'></button>
+                  </div>
+            ");
+
+            print("
+                  <div class='modal-body'>
+                    <p>" . $line -> description . "</p>
+                  </div>
+            ");
+
+            print("
+                    </div>
+                  </div>
+                </div>
+            ");
+        }
+
+        $select -> closeCursor();
+    }
+
     function displayAthlete(&$db) {
         $requete = "select *, nomSport, nomRegion from athlete, sport, region WHERE idSport=noSport and idRegion=noRegion;";
         $resultat = mysqli_query($db, $requete);
