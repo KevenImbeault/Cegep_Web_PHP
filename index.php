@@ -1,7 +1,7 @@
 <!--
     Nom : Keven Imbeault
-    Date : 6 avril 2020
-    But : Créer une page d'acceuil HTML
+    Date : 2 Février 2021
+    But : Créer une page d'acceuil en PHP
 -->
 
 <!-- Entête de la page -->

@@ -1,6 +1,6 @@
 <!--
     Nom : Keven Imbeault
-    Date : 7 avril 2020
+    Date : 28 Janvier 2021
     But : Créer un fichier contenant uniquement l'entête des pages d'un site afin de rendre la création de pages plus simple
 -->
 

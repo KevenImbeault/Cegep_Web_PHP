@@ -1,6 +1,6 @@
 <!--
     Nom : Keven Imbeault
-    Date : 7 avril 2020
+    Date : 28 Janvier 2021
     But : Créer des fonctions en PHP afin de générer du contenu à partir d'une base de données
 -->
 
@@ -15,44 +15,58 @@
     }
 
     function displayProduit(&$db) {
+        // Prépare la requête pour prendre les données nécessaire de la bd
         $select = $db -> prepare("SELECT idProduit, nomProduit, prix, description from produit_fr");
         $select -> setFetchMode(PDO::FETCH_OBJ);
 
         $select -> execute();
 
+        // Commence un compteur, utiliser pour déterminer si une nouvelle "row" doit être créer
         $count = 0;
 
         while($line = $select->fetch(PDO::FETCH_OBJ))
         {
-            setlocale(LC_MONETARY, 'en_ca');
+            // Incrémente le compteur (qui commence à 0) donc, les cols 1 à 4 sont créer
             $count++;
 
+            // Si la première colomne d'une rangée sera créer, ajouter la balise pour commencer la nouvelle rangée !
             if($count == 1) {
                 print("<div class='row row-cols-1 row-cols-sm-2 row-cols-md-4'>");
             }
 
             print("<div class='col'>");
 
+            // Nom du produit
             print("<h4>". $line -> nomProduit ."</h4>");
 
+            // Image du produit
             print("<img src='images/produits/" . $line -> idProduit . ".jpg'>");
 
+            // Prix du produit
             print("<p>" . sprintf('%01.2f', $line -> prix) . " $</p>");
 
+            // Boutons sous le prix du produit
             print("<div class='btn-group' role='group' aria-label='Basic example'>");
 
+                // Bouton "Plus d'infos" qui ouvre le modal
                 print("<button type='button' class='btn btn-primary' data-bs-toggle='modal' data-bs-target='#product" . $line -> idProduit . "Modal'>Plus d'infos</button>");
 
+                // Bouton "Acheter" pour ajouter au panier... Implémentation future
                 print("<button type='button' class='btn btn-outline-primary'>Acheter</button>");
             print("</div>");
 
 
             print("</div>");
 
+            // Si la colomne en cours est la quatrième, il faut ferme sa rangée !
             if($count == 4) {
                 print("</div>");
                 $count = 0;
             }
+
+            //
+            //  MODAL POUR AFFICHAGE DE LA DESCRIPTION DES PRODUITS
+            //
 
             print("
                 <div class='modal fade' id='product" . $line -> idProduit . "Modal' tabindex='-1' aria-labelledby='product" . $line -> idProduit . "ModalLabel' aria-hidden='true'>
@@ -60,6 +74,7 @@
                     <div class='modal-content'>
             ");
 
+            // Titre du modal et bouton "X"
             print("
                   <div class='modal-header'>
                     <h5 class='modal-title' id='product" . $line -> idProduit . "ModalLabel'>Description du produit</h5>
@@ -67,6 +82,7 @@
                   </div>
             ");
 
+            // Contenu du modal
             print("
                   <div class='modal-body'>
                     <p>" . $line -> description . "</p>
@@ -82,5 +98,5 @@
 
         $select -> closeCursor();
     }
-    
+
 ?>
