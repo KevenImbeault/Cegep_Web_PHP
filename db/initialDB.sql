@@ -57,7 +57,7 @@ CREATE TABLE IF NOT EXISTS commande
 -- Création de la table produit_fr
 CREATE TABLE IF NOT EXISTS produit_fr
 (
-    idProduit   SMALLINT,
+    idProduit   SMALLINT AUTO_INCREMENT,
     nomProduit  VARCHAR(100) NOT NULL,
     categorie   SMALLINT NOT NULL,
     fournisseur VARCHAR(50) NOT NULL,
@@ -70,7 +70,7 @@ CREATE TABLE IF NOT EXISTS produit_fr
 
 CREATE TABLE IF NOT EXISTS produit_en
 (
-    idProduit   SMALLINT,
+    idProduit   SMALLINT AUTO_INCREMENT,
     nomProduit  VARCHAR(100) NOT NULL,
     categorie   SMALLINT NOT NULL,
     fournisseur VARCHAR(50) NOT NULL,
