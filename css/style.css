@@ -165,3 +165,9 @@ body #about #aboutContent #findMe h2 + .findMeContent{
 body #about #aboutContent #findMe .findMeContent p:first-child{
     margin-bottom: 0px;
 }
+
+/* * * * ORDER PAGE * * * */
+
+body .orderItem {
+    padding: 20px;
+}

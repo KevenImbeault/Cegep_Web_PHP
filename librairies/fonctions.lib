@@ -124,7 +124,7 @@
 
             $selectProductName -> execute([$noProduit]);
 
-            print("<div>");
+            print("<div class='orderItem'>");
 
             print("<p><b>Produit : </b>" . $selectProductName -> fetch() -> nomProduit . "</p>");
 
