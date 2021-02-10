@@ -52,7 +52,7 @@
                 print("<button type='button' class='btn btn-primary' data-bs-toggle='modal' data-bs-target='#product" . $line -> idProduit . "Modal'>Plus d'infos</button>");
 
                 // Bouton "Acheter" pour ajouter au panier... Implémentation future
-                print("<button type='button' class='btn btn-outline-primary'>Acheter</button>");
+                print("<button type='button' class='btn btn-outline-primary' onclick='addRedirect(" . $line -> idProduit . ")'>Acheter</button>");
             print("</div>");
 
 
@@ -97,6 +97,83 @@
         }
 
         $select -> closeCursor();
+    }
+
+    /**
+     * Fonction pour afficher le panier de l'utilisateur
+     * @param $db Connection à la base de donnée sur laquel faire des requêtes.
+     * @param $idPanier Id du panier de l'utilisateur.
+    */
+    function displayPanier(&$db, &$idPanier) {
+
+        // Prépare la requête pour prendre les données nécessaire de la bd
+        $select = $db -> prepare("SELECT noProduit FROM panier WHERE idPanier = ?");
+        $select -> setFetchMode(PDO::FETCH_OBJ);
+
+        $select -> execute([$idPanier]);
+
+        // Commence un compteur, utiliser pour déterminer si une nouvelle "row" doit être créer
+        $count = 0;
+
+        echo $select->fetch(PDO::FETCH_OBJ);
+
+        $select -> closeCursor();
+    }
+
+    /**
+     * Fonction permettant d'ajouter un item au panier de l'utilisateur
+     * @param $db Connection à la base de donnée sur laquel faire des requêtes.
+     * @param $idPanier Id du panier de l'utilisateur.
+     * @param $idProduit Id du produit à ajouter au panier.
+     */
+    function addItem(&$db, &$idPanier, &$idProduit) {
+        // Prépare la requête afin de vérifier si le panier contient déjà un item du même type
+        $select = $db -> prepare("SELECT * FROM panier WHERE idPanier = ? AND noProduit = ?");
+        $select -> setFetchMode(PDO::FETCH_OBJ);
+
+        // Éxecute la requête en lui donnant l'id panier de l'utilisateur et l'id du produit à vérifier
+        $select -> execute([$idPanier, $idProduit]);
+
+        if($select -> rowCount() == 1) {
+            // Si un produit du même type est déjà dans le panier, augmenter sa quantité de 1
+            $line = $select -> fetch(PDO::FETCH_OBJ);
+            $newQte = $line -> quantite + 1;
+
+            $update = $db -> prepare("UPDATE panier SET quantite = ? WHERE idPanier = ? AND noProduit = ?");
+            $update -> execute([$newQte, $idPanier, $idProduit]);
+
+        } else if($select -> rowCount() == 0) {
+            // Si aucun produit du même type à été ajouter au panier, ajouter l'item
+            // | idPanier | noProduit | quantite | datePanier |
+            $insert = $db -> prepare("INSERT INTO panier VALUES(?,?,?,?)");
+            $insert -> execute([$idPanier, $idProduit, 1, date("Y-m-d H:i:s")]);
+        } else {
+            echo "Plus d'une ligne avec l'item désiré !";
+            return;
+        }
+
+
+        // Affiche le panier de l'utilisateur
+        displayPanier($db, $idPanier);
+    }
+
+    /**
+     * Fonction permettant de retirer un item du panier de l'utilisateur
+     * @param $db Connection à la base de donnée sur laquel faire des requêtes.
+     * @param $idPanier Id du panier de l'utilisateur.
+     * @param $idProduit Id du produit à retirer du panier.
+     */
+    function removeItem(&$db, &$idPanier, &$idProduit) {
+        // Prépare la requête pour insérer l'item ajouter au panier de l'utilisateur
+        $insert = $db -> prepare("INSERT INTO panier VALUES(?,?,?,?)");
+
+        // Exécute la requête en lui donnant les données nécessaires
+        // | idPanier | noProduit | quantite | datePanier |
+        $insert -> execute([$idPanier, $idProduit, 1, date("Y-m-d H:i:s")]);
+
+
+        // Affiche le panier de l'utilisateur
+        displayPanier($db, $idPanier);
     }
 
 ?>

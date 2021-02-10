@@ -90,9 +90,9 @@ CREATE TABLE IF NOT EXISTS panier
     datePanier  DATETIME NOT NULL,
     CONSTRAINT PKPanier PRIMARY KEY (idPanier, noProduit),
     CONSTRAINT FKPanier_ProduitFR FOREIGN KEY (noProduit)
-        REFERENCES produit_fr(idProduit),
-    CONSTRAINT FKPanier_ProduitEN FOREIGN KEY (noProduit)
-        REFERENCES produit_en(idProduit)
+        REFERENCES produit_fr(idProduit)
+    /*CONSTRAINT FKPanier_ProduitEN FOREIGN KEY (noProduit)
+        REFERENCES produit_en(idProduit)*/
 );
 
 -- Création de la table usager

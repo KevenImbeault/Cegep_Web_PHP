@@ -13,6 +13,3 @@ insert into produit_fr (nomProduit, categorie, fournisseur, quantite, format, pr
 insert into produit_fr (nomProduit, categorie, fournisseur, quantite, format, prix, description) values ('Billes', '1','BlaBla', 75, 'aucun', 3.99, 'Jeu de cartes en plastique');
 insert into produit_fr (nomProduit, categorie, fournisseur, quantite, format, prix, description) values ('Jouets de plage', '1','BlaBla', 75, 'aucun', 3.99, 'Cet ensemble de plage comprend une chaudière, trois pelles et un tamis');
 insert into produit_fr (nomProduit, categorie, fournisseur, quantite, format, prix, description) values ('Pansement', '1','BlaBla', 12, 'aucun', 5.00, 'La boite contient 50 pansements de différentes grandeurs');
-
-
-
