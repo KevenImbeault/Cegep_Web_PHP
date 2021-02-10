@@ -103,8 +103,11 @@
      * Fonction pour afficher le panier de l'utilisateur
      * @param $db Connection à la base de donnée sur laquel faire des requêtes.
      * @param $idPanier Id du panier de l'utilisateur.
-    */
-    function displayPanier(&$db, &$idPanier) {
+     * @param null $post Paramètre optionnel
+     */
+    function displayPanier(&$db, &$idPanier, &$post = null) {
+        //TODO : Affichage lorsque le panier est vide
+        //TODO : Affichage du montant total de la commande
 
         // Prépare la requête pour prendre les données nécessaire de la bd
         $select = $db -> prepare("SELECT noProduit, quantite FROM panier WHERE idPanier = ?");
@@ -136,6 +139,8 @@
 
             print("</div>");
         }
+
+        print("<p>Montant total de la facture (taxes incluses) : " . amountCalculation($db, $idPanier) . " $</p>");
 
         $select -> closeCursor();
     }
@@ -231,6 +236,30 @@
 
         // Affiche le panier de l'utilisateur
         displayPanier($db, $idPanier);
+    }
+
+    function amountCalculation (&$db, &$idPanier) {
+        $subtotal = 0;
+
+        // Prépare et execute une requête pour obtenir le noProduit et la quantité de tous les produits à l'intérieur d'un panier
+        $select = $db -> prepare("SELECT noProduit, quantite FROM panier WHERE idPanier = ?");
+        $select -> execute([$idPanier]);
+
+        // Prépare et execute une requête pour obtenir le prix de tous les produits à l'intérieur d'un panier
+        $selectPrice = $db -> prepare("SELECT prix FROM produit_fr WHERE idProduit = ?");
+
+        while($line = $select -> fetch(PDO::FETCH_OBJ)) {
+            // Pour chaque produit dans un panier :
+            //      - Trouve son prix
+            //      - Ajoute le prix au sous-total
+            $noProduit = $line -> noProduit;
+            $selectPrice -> execute([$noProduit]);
+            $price = $selectPrice -> fetch(PDO::FETCH_OBJ) -> prix;
+
+            $subtotal = $subtotal + $price * $line -> quantite;
+        }
+
+        return number_format($subtotal * 1.14975, 2);
     }
 
 ?>
