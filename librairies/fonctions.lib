@@ -107,7 +107,6 @@
      */
     function displayPanier(&$db, &$idPanier, &$post = null) {
         //TODO : Affichage lorsque le panier est vide
-        //TODO : Affichage du montant total de la commande
 
         // Prépare la requête pour prendre les données nécessaire de la bd
         $select = $db -> prepare("SELECT noProduit, quantite FROM panier WHERE idPanier = ?");
@@ -119,8 +118,12 @@
 
         $select -> execute([$idPanier]);
 
-        // Commence un compteur, utiliser pour déterminer si une nouvelle "row" doit être créer
-        $count = 0;
+        // Si le panier est vide, affiche que la commande est vide et termine la fonction
+        if($select -> rowCount() == 0) {
+            print("<p>Votre commande est vide !</p>");
+            $select -> closeCursor();
+            return;
+        }
 
         while($line = $select->fetch(PDO::FETCH_OBJ)) {
             $noProduit = $line -> noProduit;
@@ -141,6 +144,11 @@
         }
 
         print("<p>Montant total de la facture (taxes incluses) : " . amountCalculation($db, $idPanier) . " $</p>");
+
+        print('<div class="btn-group" role="group">
+                    <button type="submit" class="btn btn-primary">Mettre à jour</button>
+                    <button type="button" class="btn btn-light">Envoyer un courriel</button>
+               </div>');
 
         $select -> closeCursor();
     }
