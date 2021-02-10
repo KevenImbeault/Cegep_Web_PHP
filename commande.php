@@ -31,21 +31,23 @@
 <div id="products">
     <h2>Votre commande</h2>
     <hr/>
-    <?php
-        switch($_GET["action"]) {
-            case "ajouter":
-                addItem($db, $idPanier, $_GET["no"]);
-                break;
-            case "supprimer":
-                removeItem($db, $idPanier, $_GET["no"]);
-                break;
-            case "modifier":
-                break;
-            default :
-                displayPanier($db, $idPanier);
-                break;
-        }
-    ?>
+    <form action="commande.php" method="get">
+        <?php
+            switch($_GET["action"]) {
+                case "ajouter":
+                    addItem($db, $idPanier, $_GET["no"]);
+                    break;
+                case "supprimer":
+                    removeItem($db, $idPanier, $_GET["no"]);
+                    break;
+                case "modifier":
+                    break;
+                default :
+                    displayPanier($db, $idPanier);
+                    break;
+            }
+        ?>
+    </form>
 </div>
 </body>
 </html>
