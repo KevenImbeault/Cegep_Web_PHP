@@ -107,15 +107,35 @@
     function displayPanier(&$db, &$idPanier) {
 
         // Prépare la requête pour prendre les données nécessaire de la bd
-        $select = $db -> prepare("SELECT noProduit FROM panier WHERE idPanier = ?");
+        $select = $db -> prepare("SELECT noProduit, quantite FROM panier WHERE idPanier = ?");
         $select -> setFetchMode(PDO::FETCH_OBJ);
+
+        // Prépare la requête pour obtenir le nom d'un produit
+        $selectProductName = $db -> prepare("SELECT nomProduit FROM produit_fr WHERE idProduit = ?");
+        $selectProductName -> setFetchMode(PDO::FETCH_OBJ);
 
         $select -> execute([$idPanier]);
 
         // Commence un compteur, utiliser pour déterminer si une nouvelle "row" doit être créer
         $count = 0;
 
-        echo $select->fetch(PDO::FETCH_OBJ);
+        while($line = $select->fetch(PDO::FETCH_OBJ)) {
+            $noProduit = $line -> noProduit;
+
+            $selectProductName -> execute([$noProduit]);
+
+            print("<div>");
+
+            print("<p><b>Produit : </b>" . $selectProductName -> fetch() -> nomProduit . "</p>");
+
+            print("<label for='" . $noProduit . "'><b>Quantité :</b></label>");
+
+            print("<input type='number' min='0' id='produit" . $noProduit . "' name='produit" . $noProduit . "' value='" . $line -> quantite . "'/>");
+
+            print("<br /><button class='btn btn-primary' onclick='removeRedirect(" . $noProduit . ")'>Supprimer</button>");
+
+            print("</div>");
+        }
 
         $select -> closeCursor();
     }
