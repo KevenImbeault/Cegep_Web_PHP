@@ -196,4 +196,35 @@
         displayPanier($db, $idPanier);
     }
 
+    /**
+     * Fonction permettant de modifier la quantité des items du panier de l'utilisateur
+     * @param $db Connection à la base de donnée sur laquel faire des requêtes.
+     * @param $idPanier Id du panier de l'utilisateur.
+     */
+    function modifyQuantities(&$db, &$idPanier, $post) {
+        // Prépare la requête pour insérer l'item ajouter au panier de l'utilisateur
+        $updateQuantity = $db -> prepare("UPDATE panier SET quantite = ? WHERE idPanier = ? AND noProduit = ?");
+
+        $selectProductId = $db -> prepare("SELECT noProduit FROM panier WHERE idPanier = ?");
+        $selectProductId -> execute([$idPanier]);
+
+        while($line = $selectProductId -> fetch(PDO::FETCH_OBJ)) {
+            $noProduit = $line -> noProduit;
+            $newQte = $post["produit" . $noProduit];
+
+            if($newQte == 0) {
+                removeItem($db, $idPanier, $noProduit);
+            } else if ($newQte > 0) {
+                $updateQuantity -> execute([$newQte, $idPanier, $noProduit]);
+            } else {
+                echo "Quantité invalide !";
+                return;
+            }
+
+        }
+
+        // Affiche le panier de l'utilisateur
+        displayPanier($db, $idPanier);
+    }
+
 ?>

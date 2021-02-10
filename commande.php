@@ -44,6 +44,7 @@
                         removeItem($db, $idPanier, $_GET["no"]);
                         break;
                     case "modifier":
+                        modifyQuantities($db, $idPanier, $_POST);
                         break;
                 }
             } else {
