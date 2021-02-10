@@ -31,10 +31,11 @@
 <div id="products">
     <h2>Votre commande</h2>
     <hr/>
-    <form action="commande.php">
+    <form action="commande.php?action=modifier" method="post">
         <?php
 
             if($_GET != null) {
+                // Si une action est dans le lien de la page, utiliser la fonction nécessaire...
                 switch($_GET["action"]) {
                     case "ajouter":
                         addItem($db, $idPanier, $_GET["no"]);
@@ -46,9 +47,11 @@
                         break;
                 }
             } else {
+                // ... sinon, seulement afficher le panier.
                 displayPanier($db, $idPanier);
             }
         ?>
+        <button type="submit" class="btn btn-primary">Mettre à jour</button>
     </form>
 </div>
 </body>

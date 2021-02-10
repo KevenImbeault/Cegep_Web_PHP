@@ -132,7 +132,7 @@
 
             print("<input type='number' min='0' id='produit" . $noProduit . "' name='produit" . $noProduit . "' value='" . $line -> quantite . "'/>");
 
-            print("<br /><button class='btn btn-primary' onclick='removeRedirect(" . $noProduit . ")'>Supprimer</button>");
+            print("<br /><button type='button' class='btn btn-primary' onclick='removeRedirect(" . $noProduit . ")'>Supprimer</button>");
 
             print("</div>");
         }
@@ -185,11 +185,11 @@
      */
     function removeItem(&$db, &$idPanier, &$idProduit) {
         // Prépare la requête pour insérer l'item ajouter au panier de l'utilisateur
-        $insert = $db -> prepare("INSERT INTO panier VALUES(?,?,?,?)");
+        $insert = $db -> prepare("DELETE FROM panier WHERE idPanier = ? AND noProduit = ?");
 
         // Exécute la requête en lui donnant les données nécessaires
         // | idPanier | noProduit | quantite | datePanier |
-        $insert -> execute([$idPanier, $idProduit, 1, date("Y-m-d H:i:s")]);
+        $insert -> execute([$idPanier, $idProduit]);
 
 
         // Affiche le panier de l'utilisateur
