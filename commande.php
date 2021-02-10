@@ -51,7 +51,10 @@
                 displayPanier($db, $idPanier);
             }
         ?>
-        <button type="submit" class="btn btn-primary">Mettre à jour</button>
+        <div class="btn-group" role="group">
+            <button type="submit" class="btn btn-primary">Mettre à jour</button>
+            <button type="button" class="btn btn-light">Envoyer un courriel</button>
+        </div>
     </form>
 </div>
 </body>
