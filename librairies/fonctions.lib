@@ -132,7 +132,7 @@
 
             print("<input type='number' min='0' id='produit" . $noProduit . "' name='produit" . $noProduit . "' value='" . $line -> quantite . "'/>");
 
-            print("<br /><button type='button' class='btn btn-primary' onclick='removeRedirect(" . $noProduit . ")'>Supprimer</button>");
+            print("<br /><button type='button' class='btn btn-danger' onclick='removeRedirect(" . $noProduit . ")'>Supprimer</button>");
 
             print("</div>");
         }
