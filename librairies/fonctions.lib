@@ -200,15 +200,21 @@
      * Fonction permettant de modifier la quantité des items du panier de l'utilisateur
      * @param $db Connection à la base de donnée sur laquel faire des requêtes.
      * @param $idPanier Id du panier de l'utilisateur.
+     * @param $post Variable pour passer les valeur de la variable _POST.
      */
     function modifyQuantities(&$db, &$idPanier, $post) {
         // Prépare la requête pour insérer l'item ajouter au panier de l'utilisateur
         $updateQuantity = $db -> prepare("UPDATE panier SET quantite = ? WHERE idPanier = ? AND noProduit = ?");
 
+        // Prépare et execute une requête pour obtenir le noProduit de tous les produits à l'intérieur d'un panier
         $selectProductId = $db -> prepare("SELECT noProduit FROM panier WHERE idPanier = ?");
         $selectProductId -> execute([$idPanier]);
 
         while($line = $selectProductId -> fetch(PDO::FETCH_OBJ)) {
+            // Pour chaque produit dans un panier :
+            //      - Vérifier si la nouvelle quantité est 0, si tel est le cas, retirer l'item du panier
+            //      - Si la nouvelle quantité est plus grande que 0, modifier la quantité de l'item dans le panier
+            //      - Si la nouvelle quantité est tout autre chiffre, afficher un message d'erreur et terminer la fonction
             $noProduit = $line -> noProduit;
             $newQte = $post["produit" . $noProduit];
 
@@ -217,7 +223,7 @@
             } else if ($newQte > 0) {
                 $updateQuantity -> execute([$newQte, $idPanier, $noProduit]);
             } else {
-                echo "Quantité invalide !";
+                echo "ERRER : modifyQuantities() - Quantité invalide !";
                 return;
             }
 
