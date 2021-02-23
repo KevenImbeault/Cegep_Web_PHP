@@ -27,7 +27,7 @@
 ?>
 
 <!-- Contenu -->
-<body>
+<body onload="">
 <div id="products">
     <h2>Votre commande</h2>
     <hr/>
@@ -45,6 +45,13 @@
                         break;
                     case "modifier":
                         modifyQuantities($db, $idPanier, $_POST);
+                        break;
+                    case "courriel":
+                        sendEmail($db, $idPanier, $_GET["email"]);
+                        deletePanier($db, $idPanier);
+                        unset($_COOKIE['panier']);
+                        // set coookie to expire an hour ago
+                        setcookie("panier", "", -1);
                         break;
                 }
             } else {

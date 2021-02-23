@@ -3,6 +3,7 @@
     Date : 28 Janvier 2021
     But : Créer un fichier contenant seulement le pied de page d'un site afin de rendre la création de pages plus simple
 -->
+
     <script src="./js/fonctions.js"></script>
 
     <!-- Fichiers JS pour Bootstrap -->

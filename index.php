@@ -5,8 +5,33 @@
 -->
 
 <!-- Entête de la page -->
-<?php 
-  include("inclus/header.inc");
+<?php
+    session_start();
+    include("librairies/fonctions.lib");
+
+    $bd;
+    connectDB($bd);
+
+    if(isset($_GET['action'])) {
+        if($_GET['action'] == 'deconnexion') {
+            session_unset();
+            session_destroy();
+        } else if ($_GET['action'] == 'resetmp' && isset($_GET['email'])){
+            sendLostPasswordEmail($bd, $_GET['email']);
+        }
+    }
+
+    if(isset($_SESSION['acces'])) {
+        if($_SESSION['acces'] == true) {
+            include('inclus/connectedHeader.inc');
+        } else {
+            include("inclus/header.inc");
+        }
+    } else {
+        include("inclus/header.inc");
+    }
+
+
 ?>
 
 <!-- Contenu -->

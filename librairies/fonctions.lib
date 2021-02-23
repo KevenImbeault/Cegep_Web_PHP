@@ -143,12 +143,21 @@
             print("</div>");
         }
 
-        print("<p>Montant total de la facture (taxes incluses) : " . amountCalculation($db, $idPanier) . " $</p>");
+        $total = amountCalculation($db, $idPanier);
+
+        print("<input type='radio' id='transportRamassage' name='transport' value='ramassage' onclick='updateAmount(" . $total . ")' checked>Ramassage au magasin</input>");
+        print("<input type='radio' id='transportLivraison' name='transport' value='livraison' onclick='updateAmount(" . $total . ")'>Livraison*</input>");
+
+
+        print("<input id='totalAmount' type='hidden' value='" . $total . "'>");
+        print("<p>Montant total de la facture (taxes incluses) : <span id='totalAmountSpan'>" . $total . "</span> $</p>");
 
         print('<div class="btn-group" role="group">
                     <button type="submit" class="btn btn-primary">Mettre à jour</button>
-                    <button type="button" class="btn btn-light">Envoyer un courriel</button>
+                    <button type="button" class="btn btn-light" onclick="mailRedirect(askEmailAddress())">Envoyer un courriel</button>
                </div>');
+
+        print("<p><b>Attention, des frais de 10$ seront rajoutés aux commandes inférieurs à 100$ (avant taxes).</b></p>");
 
         $select -> closeCursor();
     }
@@ -270,4 +279,135 @@
         return number_format($subtotal * 1.14975, 2);
     }
 
+    function sendEmail(&$db, &$idPanier, &$email) {
+        echo "Merci d'avoir commandé chez Magasin du coin ! Votre commande devrait arriver dans quelques jours !";
+
+        $select = $db -> prepare("SELECT noProduit, quantite FROM panier WHERE idPanier = ?");
+        $select -> execute([$idPanier]);
+
+        $selectProductName = $db -> prepare("SELECT nomProduit FROM produit_fr WHERE idProduit = ?");
+
+        $mail = $email;
+        $entete = "From:etudiant.info@collegealma.ca\r\n";
+        $objet = "Magasin du coin - Confirmation de votre commande";
+
+        $texte = "Bonjour,\r\n";
+        $texte .= "Nous vous remercions d'avoir magasiné chez Magasin du coin !\r\n";
+        $texte .= "Nos employés s'affairent à préparer votre commande plus grande satisfaction.\r\n";
+        $texte .= "\r\n";
+        $texte .= "Votre commande :\r\n";
+
+        // Ajoute chaque article du panier au contenu du message
+        while ($line = $select -> fetch(PDO::FETCH_OBJ)){
+            $productQuantity = $line -> quantite;
+            $selectProductName -> execute([$line -> noProduit]);
+            $productName = $selectProductName -> fetch(PDO::FETCH_OBJ) -> nomProduit;
+
+            $texte .= $productQuantity . " x " . $productName . "\r\n";
+        }
+
+        $texte .= "Total : " . amountCalculation($db, $idPanier) . "\r\n";
+        $texte .= "\r\n";
+        $texte .= "Nous espérons que vous magasinerez de nous chez nous !\r\n";
+        $texte .= "L'équipe du Magasin du coin";
+        $texte = wordwrap($texte, 70, "\r\n", true);
+
+        // Send email
+        mail($mail,$objet,$texte,$entete);
+    }
+
+    function deletePanier(&$db, &$idPanier) {
+        $delete = $db -> prepare("DELETE FROM panier WHERE idPanier = ?");
+        $delete -> execute([$idPanier]);
+    }
+
+    function ajouterUsagerAdmin($bd, $mp, $nom, $courriel) {
+        $mp = password_hash($mp, PASSWORD_DEFAULT);
+        $data = [
+            'nom' => $nom,
+            'mp' => $mp,
+            'courriel' => $courriel
+        ];
+
+        $requete = $bd -> prepare ("INSERT INTO usager(nom, motPasse, courriel) VALUES(:nom, :mp, :courriel)");
+        $requete -> execute($data);
+    }
+
+    function validerConnexion($bd, $courriel, $mp) {
+        $valide = true;
+        $nb = 0;
+        $requete = $bd -> prepare("SELECT * FROM usager WHERE courriel=:courriel");
+        $requete -> execute(array('courriel' => $courriel));
+
+        $nb = $requete -> rowCount();
+
+        if($nb != 0) {
+            $ligne = $requete -> fetch();
+
+            if(password_verify($mp, $ligne['motPasse'])) {
+                $valide = true;
+            } else {
+                $valide = false;
+            }
+        } else {
+            $valide = false;
+        }
+
+        return $valide;
+    }
+
+    function sendLostPasswordEmail(&$db, &$email) {
+        $select = $db -> prepare("SELECT idUsager FROM usager WHERE courriel=:courriel");
+        $select -> execute(array("courriel" => $email));
+
+        if($select -> rowCount() == 0) {
+            echo "Aucun compte avec cette addresse courriel !";
+            return;
+        }
+
+        $line = $select -> fetch(PDO::FETCH_OBJ);
+
+        $lien = "http://" . $_SERVER['HTTP_HOST'] . dirname($_SERVER['REQUEST_URI']) . "/motpasse.php";
+        //Ajout de l'heure d'envoie du lien
+        $lien .= "?no=" . time();
+        $lien .= "&id=" . password_hash($line -> idUsager, PASSWORD_DEFAULT);
+
+        $mail = $email;
+        $entete = "From:etudiant.info@collegealma.ca\r\n";
+        $objet = "Magasin du coin - Mot de passe oublié";
+
+        $texte = "Bonjour,\r\n";
+        $texte .= "Vous avez fait une demande pour réinitialiser votre mot de passe. Pour ce faire, cliquer sur le lien suivant :\r\n";
+        $texte .= $lien . "\r\n";
+        $texte .= "Attention, ce lien n'est valide que pour les 5 prochaines minutes. Dépassez ce délai, vous devrez refaire une nouvelle demande\r\n";
+        $texte .= "Meilleures salutation,\r\n";
+        $texte .= "L'équipe du Magasin du Coin !\r\n";
+        $texte = wordwrap($texte, 70, "\r\n", false);
+
+        // Send email
+        mail($mail,$objet,$texte,$entete);
+    }
+
+    function printNameByEncryptedId(&$db, &$id) {
+        $select = $db -> prepare("SELECT idUsager, nom FROM usager");
+        $select -> execute();
+
+        while($line = $select -> fetch(PDO::FETCH_OBJ)){
+            if(password_verify($line -> idUsager, $id)) {
+                print("Bonjour " . $line -> nom);
+            }
+        }
+    }
+
+    function modifyUserPassword(&$db, &$id, &$newPassword) {
+        $select = $db -> prepare("SELECT idUsager, nom FROM usager");
+        $select -> execute();
+
+        while($line = $select -> fetch(PDO::FETCH_OBJ)){
+            if(password_verify($line -> idUsager, $id)) {
+                $update = $db -> prepare("UPDATE usager SET motPasse=:mp WHERE idUsager=:idUsager");
+                $update -> execute(array('mp' => password_hash($newPassword, PASSWORD_DEFAULT), 'idUsager' => $line -> idUsager));
+            }
+        }
+    }
 ?>

@@ -79,6 +79,9 @@
                         <li><a class="dropdown-item" href="#">Supprimer</a></li>
                     </ul>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="./index.php?action=deconnexion">Déconnexion</a>
+                </li>
             </ul>
         </div>
     </div>

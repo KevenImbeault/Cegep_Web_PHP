@@ -98,7 +98,7 @@ CREATE TABLE IF NOT EXISTS panier
 -- Création de la table usager
 CREATE TABLE IF NOT EXISTS usager
 (
-    idUsager    SMALLINT,
+    idUsager    SMALLINT AUTO_INCREMENT,
     nom         VARCHAR(45) NOT NULL,
     motPasse    VARCHAR(250) NOT NULL,
     courriel    VARCHAR(50) NOT NULL,
